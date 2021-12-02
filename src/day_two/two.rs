@@ -8,7 +8,6 @@ fn get_lines(filename: &str) -> Vec<String> {
 }
 
 pub fn star_one() -> i32 {
-
     let mut horizontal: i32 = 0;
     let mut depth: i32 = 0;
 
