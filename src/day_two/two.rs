@@ -28,7 +28,6 @@ pub fn star_one() -> i32 {
 }
 
 pub fn star_two() -> i32 {
-
     let mut horizontal: i32 = 0;
     let mut depth: i32 = 0;
     let mut aim: i32 = 0;
