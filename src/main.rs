@@ -19,7 +19,10 @@ fn main() {
 
     println!("{}", position_two);*/
 
-    let power_consumption = day_three::star_one();
+    //let power_consumption = day_three::star_one();
+    //println!("{}", power_consumption);
+
+    let power_consumption = day_three::star_two();
     println!("{}", power_consumption);
 }
 
