@@ -1,5 +1,6 @@
 #[path = "day_one/one.rs"] mod day_one;
 #[path = "day_two/two.rs"] mod day_two;
+#[path = "day_three/three.rs"] mod day_three;
 
 fn main() {
     /* DAY ONE
@@ -7,7 +8,7 @@ fn main() {
     let counted_two = day_one::start_two();
 
     println!("{}", counted);
-    println!("{}", counted_two);*/
+    println!("{}", counted_two);
 
 
     // DAY 2
@@ -16,7 +17,10 @@ fn main() {
 
     let position_two = day_two::star_two();
 
-    println!("{}", position_two);
+    println!("{}", position_two);*/
+
+    let power_consumption = day_three::star_one();
+    println!("{}", power_consumption);
 }
 
 
