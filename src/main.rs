@@ -1,6 +1,7 @@
 #[path = "day_one/one.rs"] mod day_one;
 #[path = "day_two/two.rs"] mod day_two;
 #[path = "day_three/three.rs"] mod day_three;
+#[path = "day_four/four.rs"] mod day_four;
 
 fn main() {
     /* DAY ONE
@@ -19,11 +20,16 @@ fn main() {
 
     println!("{}", position_two);*/
 
+    // DAY THREE
     //let power_consumption = day_three::star_one();
     //println!("{}", power_consumption);
 
-    let power_consumption = day_three::star_two();
-    println!("{}", power_consumption);
+    //let power_consumption = day_three::star_two();
+    //println!("{}", power_consumption);
+
+    // DAY FOUR
+    let score_of_winning_board = day_four::star_one();
+    println!("{}", score_of_winning_board);
 }
 
 

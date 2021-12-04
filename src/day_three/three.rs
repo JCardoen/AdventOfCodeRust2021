@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::i32;
 use std::io::{BufRead, BufReader, Bytes};
-use byteorder::{BigEndian, ReadBytesExt}; // 1.2.7
+use byteorder::{BigEndian, ReadBytesExt};
 
 
 fn get_lines(filename: &str) -> Vec<String> {
