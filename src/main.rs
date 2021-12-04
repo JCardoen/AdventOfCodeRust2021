@@ -28,8 +28,11 @@ fn main() {
     //println!("{}", power_consumption);
 
     // DAY FOUR
-    let score_of_winning_board = day_four::star_one();
-    println!("{}", score_of_winning_board);
+    //et score_of_winning_board = day_four::star_one();
+    //println!("{}", score_of_winning_board);
+
+    let score_of_last_winning_board = day_four::star_two();
+    println!("{}", score_of_last_winning_board);
 }
 
 

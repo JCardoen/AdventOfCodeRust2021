@@ -1,3 +1,4 @@
+use std::borrow::Borrow;
 use std::cell::Cell;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
@@ -73,6 +74,46 @@ pub fn star_one() -> u32 {
                 let score = board.score();
                 println!("Number {}  --- Board {} won at idx {} with score {}!", number, index, idx, score);
                 return score * number;
+            }
+        }
+    }
+
+    return 0;
+}
+
+pub fn star_two() -> u32 {
+    // 1. Read solution as a single line
+    // 2. Create playboard
+    let lines_of_file: Vec<String> = get_lines("src/day_four/input.txt");
+    let playboard_lines = &lines_of_file[2..].to_vec();
+    let solution: &Vec<u32> = &lines_of_file[0].split(',').map(|x| x.parse::<u32>().unwrap()).collect::<Vec<u32>>();
+    let mut boards: Vec<PlayBoard> = vec![];
+    let mut latest_winner_idx : usize = 0;
+    let mut latest_number_for_winner: u32 = 0;
+    let mut total_winners = 0;
+
+    for chunk in playboard_lines.chunks(6) {
+        boards.push(parse_playboard_from_chunk(chunk));
+    }
+
+    let number_of_boards = boards.len();
+    let mut winners: Vec<u32> = vec![];
+    for number in solution.iter() {
+        for (index, board) in boards.iter_mut().enumerate() {
+            board.flag_number(number);
+
+            if board.winner() {
+                latest_winner_idx = index;
+                latest_number_for_winner = *number;
+                if !winners.contains(&(index as u32)) {
+                    total_winners += 1;
+                    winners.push(index as u32);
+                }
+
+                if total_winners == number_of_boards {
+                    let score = board.score();
+                    return score * number;
+                }
             }
         }
     }
