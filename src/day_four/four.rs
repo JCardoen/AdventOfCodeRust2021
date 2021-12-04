@@ -3,7 +3,7 @@ use std::fs::File;
 use std::io::{BufRead, BufReader};
 
 struct Point {
-    is_checked: Cell<bool>,
+    is_checked: bool,
     val: u32
 }
 
@@ -13,10 +13,10 @@ struct PlayBoard {
 
 impl PlayBoard {
     fn flag_number(&mut self, number: &u32) {
-        for row in &self.board {
-            for point in row {
+        for row in &mut self.board {
+            for mut point in row {
                 if point.val == *number {
-                    point.is_checked.set(true);
+                    point.is_checked = true;
                 }
             }
         }
@@ -24,7 +24,7 @@ impl PlayBoard {
     fn winner(&self) -> bool {
         let mut index = 0;
         for row in &self.board {
-            let bools = row.iter().map(|point | point.is_checked.get()).collect::<Vec<bool>>();
+            let bools = row.iter().map(|point | point.is_checked).collect::<Vec<bool>>();
             let sum_of_row = bools.iter().map(|x| *x as u32).sum::<u32>();
             if sum_of_row == 5 {
                 return true;
@@ -33,7 +33,7 @@ impl PlayBoard {
             // now check the column at index i, since i is a same size matrix
             let column_is_checked= &self.board
                 .iter()  // iterate over rows
-                .map(|x| x[index].is_checked.get()) // get the icolumn-th element from each row
+                .map(|x| x[index].is_checked) // get the icolumn-th element from each row
                 .collect::<Vec<bool>>();
 
             let sum_of_col = column_is_checked.iter().map(|x| *x as u32).sum::<u32>();
@@ -48,7 +48,7 @@ impl PlayBoard {
     }
 
     fn score(&mut self) -> u32 {
-        let values = &self.board.iter_mut().flat_map(|row| row.iter().filter(|p| p.is_checked.get() == false).map(|p| p.val).collect::<Vec<u32>>()).collect::<Vec<u32>>();
+        let values = &self.board.iter_mut().flat_map(|row| row.iter().filter(|p| p.is_checked == false).map(|p| p.val).collect::<Vec<u32>>()).collect::<Vec<u32>>();
         return values.iter().sum::<u32>();
     }
 }
@@ -127,7 +127,7 @@ fn parse_playboard_from_chunk(chunk: &[String]) -> PlayBoard {
         if row.len() > 0 {
             let columns: Vec<Point> = row.split_whitespace()
                                         .map(|x| Point {
-                                            is_checked: Cell::from(false),
+                                            is_checked: false,
                                             val: x.trim().parse::<u32>()
                                             .unwrap()}).collect();
             board.push(columns);
