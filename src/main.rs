@@ -2,6 +2,7 @@
 #[path = "day_two/two.rs"] mod day_two;
 #[path = "day_three/three.rs"] mod day_three;
 #[path = "day_four/four.rs"] mod day_four;
+#[path = "day_five/five.rs"] mod day_five;
 
 fn main() {
     /* DAY ONE
@@ -31,8 +32,14 @@ fn main() {
     //et score_of_winning_board = day_four::star_one();
     //println!("{}", score_of_winning_board);
 
-    let score_of_last_winning_board = day_four::star_two();
-    println!("{}", score_of_last_winning_board);
+    //let score_of_last_winning_board = day_four::star_two();
+    //println!("{}", score_of_last_winning_board);
+
+    //let intersection_count = day_five::star_one();
+    //println!("{}", intersection_count);
+
+    let intersection_count = day_five::star_two();
+    println!("{}", intersection_count);
 }
 
 

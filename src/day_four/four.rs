@@ -68,7 +68,6 @@ pub fn star_one() -> u32 {
     for (idx, number) in solution.iter().enumerate() {
         for (index, board) in boards.iter_mut().enumerate() {
             board.flag_number(number);
-
             if board.winner() {
                 let score = board.score();
                 println!("Number {}  --- Board {} won at idx {} with score {}!", number, index, idx, score);
