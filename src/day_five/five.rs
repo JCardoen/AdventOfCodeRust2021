@@ -74,7 +74,7 @@ pub fn star_one() -> i32 {
 }
 
 pub fn star_two() -> i32 {
-    let lines = get_lines("src/day_five/input.txt");
+    let lines = get_lines("src/day_five/sample.txt");
     let size = lines.len() * 2;
     let mut hashmap_for_points: HashMap<i32, Vec<i32>> = HashMap::new();
     // x1,y1 -> x2,y2
