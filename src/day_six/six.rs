@@ -36,7 +36,7 @@ pub fn exponential_approach_didnt_work() -> i128 {
 
 pub fn star_one_and_two() -> u128 {
     let start = Instant::now();
-    let number_of_days: u16 = 256;
+    let number_of_days: u16 = 80;
 
     // Inspired by https://doc.rust-lang.org/book/ch16-03-shared-state.html
     let lines = get_lines("src/day_six/input.txt");
@@ -91,4 +91,18 @@ pub fn star_one_and_two() -> u128 {
     println!("{:.2?} processing time threads", start.elapsed());
 
     return *fish_pop_mtx.lock().unwrap();
+}
+
+fn test() {
+    let mut input = vec![0;9];
+
+    part1(input);
+}
+
+fn part1(mut input: Vec<usize>) {
+    for idx in 0..input.len() {
+        if idx == 0 {
+            input[6] += input[idx];
+        }
+    }
 }
