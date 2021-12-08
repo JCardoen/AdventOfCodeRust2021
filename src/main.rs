@@ -5,6 +5,7 @@
 #[path = "day_five/five.rs"] mod day_five;
 #[path = "day_six/six.rs"] mod day_six;
 #[path = "day_seven/seven.rs"] mod day_seven;
+#[path = "day_eight/eight.rs"] mod day_eight;
 
 fn main() {
     /* DAY ONE
@@ -47,8 +48,12 @@ fn main() {
     //println!("{}", fish_after_eighteen_days);
     //println!("{}", day_six::star_one_and_two());
 
-    println!("{}", day_seven::star_one());
-    println!("{}", day_seven::star_two());
+    //println!("{}", day_seven::star_one());
+    //println!("{}", day_seven::star_two());
+
+    //println!("{}", day_eight::star_one());
+    println!("{}", day_eight::star_two());
+
 
 }
 
