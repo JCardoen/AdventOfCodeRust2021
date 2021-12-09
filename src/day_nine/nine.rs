@@ -110,3 +110,46 @@ pub fn star_one() -> i32 {
 
     return lps.iter().map(|x| x + 1).collect::<Vec<i32>>().iter().sum();
 }
+
+pub fn star_two() -> i32 {
+    fn dfs(i: isize, j: isize, grid: &Vec<Vec<i32>>, visited: &mut HashSet<(isize, isize)>) {
+        if i<0 || j<0 || i>= grid.len() as isize || j>= grid[i as usize].len() as isize || visited.contains(&(i, j)) || grid[i as usize][j as usize]==9 {
+            return
+        }
+        visited.insert((i, j));
+        dfs(i-1, j, grid, visited);
+        dfs(i+1, j, grid, visited);
+        dfs(i, j-1, grid, visited);
+        dfs(i, j+1, grid, visited);
+    }
+
+    let input_lines = get_lines("src/day_nine/input.txt");
+    let mut grid: Vec<Vec<i32>> = vec![];
+    let mut visited: HashSet<(isize, isize)> = HashSet::new();
+
+    for input in input_lines {
+        let mut row_vec = vec![];
+        for char in input.chars() {
+            let nbr = char.to_string().parse().unwrap();
+            row_vec.push(nbr);
+        }
+        grid.push(row_vec)
+    }
+
+    let mut memo = vec![];
+    for (i, row) in grid.iter().enumerate() {
+        for (j, col) in row.iter().enumerate() {
+            if (!visited.contains(&(i as isize, j as isize))) && grid[i][j]!=9 {
+                let prev = visited.len();
+                dfs(i as isize, j as isize, &grid, &mut visited);
+                memo.push(visited.len() - prev);
+            }
+        }
+
+    }
+
+    memo.sort();
+    let product = memo[memo.len() - 3] * memo[memo.len() - 2] * memo[memo.len() - 1];
+    println!("{:?}", memo);
+    return product as i32;
+}

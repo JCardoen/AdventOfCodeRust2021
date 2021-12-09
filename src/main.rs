@@ -54,7 +54,8 @@ fn main() {
 
     //println!("{}", day_eight::star_one());
     //println!("{}", day_eight::star_two());
-    println!("{}", day_nine::star_one());
+    //println!("{}", day_nine::star_one());
+    println!("{}", day_nine::star_two());
 
 
 }
