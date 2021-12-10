@@ -4,7 +4,10 @@ use std::io::{BufRead, BufReader};
 fn get_lines(filename: &str) -> Vec<String> {
     let file = File::open(filename).unwrap();
     let reader = BufReader::new(file);
-    return reader.lines().map(|l| l.expect("Could not parse line")).collect();
+    return reader
+        .lines()
+        .map(|l| l.expect("Could not parse line"))
+        .collect();
 }
 
 pub fn star_one() -> i32 {
@@ -19,7 +22,10 @@ pub fn star_one() -> i32 {
             "forward" => horizontal += val,
             "down" => depth += val,
             "up" => depth -= val,
-            _ => println!("Nothing to match here for command {}", current_command_value[0])
+            _ => println!(
+                "Nothing to match here for command {}",
+                current_command_value[0]
+            ),
         };
     }
 
@@ -36,10 +42,16 @@ pub fn star_two() -> i32 {
         let cmd = current_command_value[0];
         let val = current_command_value[1].parse::<i32>().unwrap();
         match cmd {
-            "forward" => {horizontal += val; depth += (aim * val)},
+            "forward" => {
+                horizontal += val;
+                depth += (aim * val)
+            }
             "down" => aim += val,
             "up" => aim -= val,
-            _ => println!("Nothing to match here for command {}", current_command_value[0])
+            _ => println!(
+                "Nothing to match here for command {}",
+                current_command_value[0]
+            ),
         };
     }
 

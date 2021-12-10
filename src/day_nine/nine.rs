@@ -6,7 +6,10 @@ use std::io::{BufRead, BufReader};
 fn get_lines(filename: &str) -> Vec<String> {
     let file = File::open(filename).unwrap();
     let reader = BufReader::new(file);
-    return reader.lines().map(|l| l.expect("Could not parse line")).collect();
+    return reader
+        .lines()
+        .map(|l| l.expect("Could not parse line"))
+        .collect();
 }
 
 pub fn star_one() -> i32 {
@@ -23,7 +26,6 @@ pub fn star_one() -> i32 {
         grid.push(row_vec)
     }
 
-
     for (i, row) in grid.iter().enumerate() {
         for (j, col) in row.iter().enumerate() {
             // Top
@@ -37,7 +39,6 @@ pub fn star_one() -> i32 {
                 }
                 // Right
                 if j == row.len() - 1 {
-
                     if col < &grid[i + 1][j] && col < &grid[i][j - 1] {
                         lps.push(*col);
                     }
@@ -62,7 +63,6 @@ pub fn star_one() -> i32 {
                 }
                 // Right
                 if j == row.len() - 1 {
-
                     if col < &grid[i - 1][j] && col < &grid[i][j - 1] {
                         lps.push(*col);
                     }
@@ -88,7 +88,6 @@ pub fn star_one() -> i32 {
 
             // Right
             if j == row.len() - 1 {
-
                 if col < &grid[i - 1][j] && col < &grid[i + 1][j] && col < &grid[i][j - 1] {
                     lps.push(*col);
                     continue;
@@ -97,7 +96,11 @@ pub fn star_one() -> i32 {
             }
 
             // Normal
-            if col < &grid[i - 1][j] && col < &grid[i + 1][j] && col < &grid[i][j - 1] && col < &grid[i][j + 1] {
+            if col < &grid[i - 1][j]
+                && col < &grid[i + 1][j]
+                && col < &grid[i][j - 1]
+                && col < &grid[i][j + 1]
+            {
                 lps.push(*col);
                 continue;
             }
@@ -113,14 +116,20 @@ pub fn star_one() -> i32 {
 
 pub fn star_two() -> i32 {
     fn dfs(i: isize, j: isize, grid: &Vec<Vec<i32>>, visited: &mut HashSet<(isize, isize)>) {
-        if i<0 || j<0 || i>= grid.len() as isize || j>= grid[i as usize].len() as isize || visited.contains(&(i, j)) || grid[i as usize][j as usize]==9 {
-            return
+        if i < 0
+            || j < 0
+            || i >= grid.len() as isize
+            || j >= grid[i as usize].len() as isize
+            || visited.contains(&(i, j))
+            || grid[i as usize][j as usize] == 9
+        {
+            return;
         }
         visited.insert((i, j));
-        dfs(i-1, j, grid, visited);
-        dfs(i+1, j, grid, visited);
-        dfs(i, j-1, grid, visited);
-        dfs(i, j+1, grid, visited);
+        dfs(i - 1, j, grid, visited);
+        dfs(i + 1, j, grid, visited);
+        dfs(i, j - 1, grid, visited);
+        dfs(i, j + 1, grid, visited);
     }
 
     let input_lines = get_lines("src/day_nine/input.txt");
@@ -139,13 +148,12 @@ pub fn star_two() -> i32 {
     let mut memo = vec![];
     for (i, row) in grid.iter().enumerate() {
         for (j, col) in row.iter().enumerate() {
-            if (!visited.contains(&(i as isize, j as isize))) && grid[i][j]!=9 {
+            if (!visited.contains(&(i as isize, j as isize))) && grid[i][j] != 9 {
                 let prev = visited.len();
                 dfs(i as isize, j as isize, &grid, &mut visited);
                 memo.push(visited.len() - prev);
             }
         }
-
     }
 
     memo.sort();

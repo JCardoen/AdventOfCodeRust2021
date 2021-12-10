@@ -4,7 +4,7 @@ use std::io::{BufRead, BufReader};
 
 struct Point {
     is_checked: bool,
-    val: u32
+    val: u32,
 }
 
 struct PlayBoard {
@@ -24,15 +24,19 @@ impl PlayBoard {
     fn winner(&self) -> bool {
         let mut index = 0;
         for row in &self.board {
-            let bools = row.iter().map(|point | point.is_checked).collect::<Vec<bool>>();
+            let bools = row
+                .iter()
+                .map(|point| point.is_checked)
+                .collect::<Vec<bool>>();
             let sum_of_row = bools.iter().map(|x| *x as u32).sum::<u32>();
             if sum_of_row == 5 {
                 return true;
             }
 
             // now check the column at index i, since i is a same size matrix
-            let column_is_checked= &self.board
-                .iter()  // iterate over rows
+            let column_is_checked = &self
+                .board
+                .iter() // iterate over rows
                 .map(|x| x[index].is_checked) // get the icolumn-th element from each row
                 .collect::<Vec<bool>>();
 
@@ -48,7 +52,16 @@ impl PlayBoard {
     }
 
     fn score(&mut self) -> u32 {
-        let values = &self.board.iter_mut().flat_map(|row| row.iter().filter(|p| p.is_checked == false).map(|p| p.val).collect::<Vec<u32>>()).collect::<Vec<u32>>();
+        let values = &self
+            .board
+            .iter_mut()
+            .flat_map(|row| {
+                row.iter()
+                    .filter(|p| p.is_checked == false)
+                    .map(|p| p.val)
+                    .collect::<Vec<u32>>()
+            })
+            .collect::<Vec<u32>>();
         return values.iter().sum::<u32>();
     }
 }
@@ -58,7 +71,10 @@ pub fn star_one() -> u32 {
     // 2. Create playboard
     let lines_of_file: Vec<String> = get_lines("src/day_four/input.txt");
     let playboard_lines = &lines_of_file[2..].to_vec();
-    let solution: &Vec<u32> = &lines_of_file[0].split(',').map(|x| x.parse::<u32>().unwrap()).collect::<Vec<u32>>();
+    let solution: &Vec<u32> = &lines_of_file[0]
+        .split(',')
+        .map(|x| x.parse::<u32>().unwrap())
+        .collect::<Vec<u32>>();
     let mut boards: Vec<PlayBoard> = vec![];
 
     for chunk in playboard_lines.chunks(6) {
@@ -70,7 +86,10 @@ pub fn star_one() -> u32 {
             board.flag_number(number);
             if board.winner() {
                 let score = board.score();
-                println!("Number {}  --- Board {} won at idx {} with score {}!", number, index, idx, score);
+                println!(
+                    "Number {}  --- Board {} won at idx {} with score {}!",
+                    number, index, idx, score
+                );
                 return score * number;
             }
         }
@@ -84,9 +103,12 @@ pub fn star_two() -> u32 {
     // 2. Create playboard
     let lines_of_file: Vec<String> = get_lines("src/day_four/input.txt");
     let playboard_lines = &lines_of_file[2..].to_vec();
-    let solution: &Vec<u32> = &lines_of_file[0].split(',').map(|x| x.parse::<u32>().unwrap()).collect::<Vec<u32>>();
+    let solution: &Vec<u32> = &lines_of_file[0]
+        .split(',')
+        .map(|x| x.parse::<u32>().unwrap())
+        .collect::<Vec<u32>>();
     let mut boards: Vec<PlayBoard> = vec![];
-    let mut latest_winner_idx : usize = 0;
+    let mut latest_winner_idx: usize = 0;
     let mut latest_number_for_winner: u32 = 0;
     let mut total_winners = 0;
 
@@ -124,11 +146,13 @@ fn parse_playboard_from_chunk(chunk: &[String]) -> PlayBoard {
 
     for row in chunk {
         if row.len() > 0 {
-            let columns: Vec<Point> = row.split_whitespace()
-                                        .map(|x| Point {
-                                            is_checked: false,
-                                            val: x.trim().parse::<u32>()
-                                            .unwrap()}).collect();
+            let columns: Vec<Point> = row
+                .split_whitespace()
+                .map(|x| Point {
+                    is_checked: false,
+                    val: x.trim().parse::<u32>().unwrap(),
+                })
+                .collect();
             board.push(columns);
         }
     }
@@ -141,6 +165,8 @@ fn parse_playboard_from_chunk(chunk: &[String]) -> PlayBoard {
 fn get_lines(filename: &str) -> Vec<String> {
     let file = File::open(filename).unwrap();
     let reader = BufReader::new(file);
-    return reader.lines().map(|l| l.expect("Could not parse line")).collect();
+    return reader
+        .lines()
+        .map(|l| l.expect("Could not parse line"))
+        .collect();
 }
-

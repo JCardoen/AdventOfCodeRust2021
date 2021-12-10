@@ -1,13 +1,15 @@
+use byteorder::{BigEndian, ReadBytesExt};
 use std::fs::File;
 use std::i32;
 use std::io::{BufRead, BufReader, Bytes};
-use byteorder::{BigEndian, ReadBytesExt};
-
 
 fn get_lines(filename: &str) -> Vec<String> {
     let file = File::open(filename).unwrap();
     let reader = BufReader::new(file);
-    return reader.lines().map(|l| l.expect("Could not parse line")).collect();
+    return reader
+        .lines()
+        .map(|l| l.expect("Could not parse line"))
+        .collect();
 }
 
 pub fn star_one() -> u32 {
@@ -23,13 +25,13 @@ pub fn star_one() -> u32 {
             match char {
                 '1' => counter_ones_for_each_position[index] += 1,
                 '0' => counter_zeros_for_each_position[index] += 1,
-                _ => println!("Nothing to do here")
+                _ => println!("Nothing to do here"),
             };
         }
     }
 
-    let mut epsilon_rate : Vec<&char> = vec![&'-'; size];
-    let mut gamma_rate : Vec<&char> = vec![&'x'; size];
+    let mut epsilon_rate: Vec<&char> = vec![&'-'; size];
+    let mut gamma_rate: Vec<&char> = vec![&'x'; size];
 
     for (idx, value) in counter_zeros_for_each_position.iter().enumerate() {
         if counter_ones_for_each_position[idx] > *value {
@@ -40,7 +42,6 @@ pub fn star_one() -> u32 {
 
         gamma_rate[idx] = ptr_zero;
         epsilon_rate[idx] = ptr_one;
-
     }
 
     let gamma_string: String = gamma_rate.into_iter().collect();
@@ -49,7 +50,6 @@ pub fn star_one() -> u32 {
     let actual_gamma_rate = u32::from_str_radix(&*gamma_string, 2).unwrap();
     let actual_epsilon_rate = u32::from_str_radix(&*epsilon_string, 2).unwrap();
     return (actual_gamma_rate * actual_epsilon_rate);
-
 }
 
 pub fn star_two() -> u32 {
@@ -122,7 +122,7 @@ fn filter_values_oxy(mut vec: Vec<String>) -> Vec<String> {
     return vec;
 }
 
-fn get_most_common_at_position(vec:&Vec<String>, position: usize) -> char {
+fn get_most_common_at_position(vec: &Vec<String>, position: usize) -> char {
     let mut ones: u32 = 0;
     let mut zeros: u32 = 0;
 
@@ -131,7 +131,7 @@ fn get_most_common_at_position(vec:&Vec<String>, position: usize) -> char {
         match char {
             '1' => ones += 1,
             '0' => zeros += 1,
-            _ => println!("Nothing to do here")
+            _ => println!("Nothing to do here"),
         };
     }
 

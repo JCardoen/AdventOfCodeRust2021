@@ -1,13 +1,23 @@
-#[path = "day_one/one.rs"] mod day_one;
-#[path = "day_two/two.rs"] mod day_two;
-#[path = "day_three/three.rs"] mod day_three;
-#[path = "day_four/four.rs"] mod day_four;
-#[path = "day_five/five.rs"] mod day_five;
-#[path = "day_six/six.rs"] mod day_six;
-#[path = "day_seven/seven.rs"] mod day_seven;
-#[path = "day_eight/eight.rs"] mod day_eight;
-#[path = "day_nine/nine.rs"] mod day_nine;
-#[path = "day_ten/ten.rs"] mod day_ten;
+#[path = "day_eight/eight.rs"]
+mod day_eight;
+#[path = "day_five/five.rs"]
+mod day_five;
+#[path = "day_four/four.rs"]
+mod day_four;
+#[path = "day_nine/nine.rs"]
+mod day_nine;
+#[path = "day_one/one.rs"]
+mod day_one;
+#[path = "day_seven/seven.rs"]
+mod day_seven;
+#[path = "day_six/six.rs"]
+mod day_six;
+#[path = "day_ten/ten.rs"]
+mod day_ten;
+#[path = "day_three/three.rs"]
+mod day_three;
+#[path = "day_two/two.rs"]
+mod day_two;
 
 fn main() {
     /* DAY ONE
@@ -59,7 +69,4 @@ fn main() {
     //println!("{}", day_nine::star_two());
     //println!("{}", day_ten::star_one());
     println!("{}", day_ten::star_two());
-
 }
-
-

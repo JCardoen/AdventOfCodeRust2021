@@ -9,7 +9,10 @@ use std::time::Instant;
 fn get_lines(filename: &str) -> Vec<String> {
     let file = File::open(filename).unwrap();
     let reader = BufReader::new(file);
-    return reader.lines().map(|l| l.expect("Could not parse line")).collect();
+    return reader
+        .lines()
+        .map(|l| l.expect("Could not parse line"))
+        .collect();
 }
 
 /*
@@ -40,12 +43,20 @@ pub fn star_one_and_two() -> u128 {
 
     // Inspired by https://doc.rust-lang.org/book/ch16-03-shared-state.html
     let lines = get_lines("src/day_six/input.txt");
-    let initial_fishes:Vec<u8> = lines[0].split(',').map(|fish| fish.parse().unwrap()).collect::<Vec<u8>>();
-    let fishes_to_compute: Vec<u8> = lines[0].split(',').map(|fish| fish.parse().unwrap()).collect::<HashSet<_>>().into_iter().collect::<Vec<u8>>();
+    let initial_fishes: Vec<u8> = lines[0]
+        .split(',')
+        .map(|fish| fish.parse().unwrap())
+        .collect::<Vec<u8>>();
+    let fishes_to_compute: Vec<u8> = lines[0]
+        .split(',')
+        .map(|fish| fish.parse().unwrap())
+        .collect::<HashSet<_>>()
+        .into_iter()
+        .collect::<Vec<u8>>();
 
     // Shared across threads
     let fish_pop_mtx = Arc::new(Mutex::new(0 as u128));
-    let fish_state_mtx: Arc<Mutex<Vec<u8>>> = Arc::new(Mutex::new(vec![0;8]));
+    let fish_state_mtx: Arc<Mutex<Vec<u8>>> = Arc::new(Mutex::new(vec![0; 8]));
 
     for fish in initial_fishes {
         let mut fishes_state = fish_state_mtx.lock().unwrap();
@@ -65,7 +76,7 @@ pub fn star_one_and_two() -> u128 {
         let thread = thread::spawn(move || {
             let mut vector_for_fish: Vec<u8> = vec![];
             vector_for_fish.push(fish);
-            for _ in 1..number_of_days+1 {
+            for _ in 1..number_of_days + 1 {
                 for idx in 0..vector_for_fish.len() {
                     if vector_for_fish[idx] == 0 {
                         vector_for_fish[idx] = 6;
@@ -94,7 +105,7 @@ pub fn star_one_and_two() -> u128 {
 }
 
 fn test() {
-    let mut input = vec![0;9];
+    let mut input = vec![0; 9];
 
     part1(input);
 }

@@ -10,20 +10,18 @@
 260      G H
 263        H
 **/
-
-
-
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
 fn get_lines() -> Vec<u32> {
-
     let filename = "src/day_one/input.txt";
     let file = File::open(filename).unwrap();
     let reader = BufReader::new(file);
-    return reader.lines().map(|x| x.unwrap().trim().parse::<u32>().unwrap()).collect();
+    return reader
+        .lines()
+        .map(|x| x.unwrap().trim().parse::<u32>().unwrap())
+        .collect();
 }
-
 
 pub fn star_one() -> u32 {
     let mut counter: u32 = 0;

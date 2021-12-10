@@ -5,16 +5,21 @@ use std::io::{BufRead, BufReader};
 fn get_lines(filename: &str) -> Vec<i32> {
     let file = File::open(filename).unwrap();
     let reader = BufReader::new(file);
-    let lines = reader.lines().map(|l| l.expect("Could not parse line")).collect::<Vec<String>>();
-    return lines[0].split(',').map(|s| s.parse().unwrap()).collect::<Vec<i32>>();
-
+    let lines = reader
+        .lines()
+        .map(|l| l.expect("Could not parse line"))
+        .collect::<Vec<String>>();
+    return lines[0]
+        .split(',')
+        .map(|s| s.parse().unwrap())
+        .collect::<Vec<i32>>();
 }
 
 pub fn star_one() -> i32 {
     // Here we can simply use the median value
     let mut crabs = get_lines("src/day_seven/input.txt");
     crabs.sort();
-    let median = crabs[(crabs.len() - 1)/2];
+    let median = crabs[(crabs.len() - 1) / 2];
     let mut fuel_cost = 0;
     for crab in crabs {
         let cost_for_crab = crab - median;
@@ -41,7 +46,7 @@ pub fn star_two() -> f64 {
 
     for crab in crabs {
         let mut x = (crab - mean_crab_position_low).abs();
-        let mut y=  (crab - mean_crab_position_high).abs();
+        let mut y = (crab - mean_crab_position_high).abs();
 
         x = x * (x + 1.0) / 2.0;
         y = y * (y + 1.0) / 2.0;
@@ -50,6 +55,6 @@ pub fn star_two() -> f64 {
     }
 
     println!("{:.8} {:.8}", fuel_cost_low, fuel_cost_high);
-    
+
     return fuel_cost_low.min(fuel_cost_high).ceil();
 }

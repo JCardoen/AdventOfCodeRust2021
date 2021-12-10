@@ -6,7 +6,10 @@ use std::io::{BufRead, BufReader};
 fn get_lines(filename: &str) -> Vec<String> {
     let file = File::open(filename).unwrap();
     let reader = BufReader::new(file);
-    return reader.lines().map(|l| l.expect("Could not parse line")).collect();
+    return reader
+        .lines()
+        .map(|l| l.expect("Could not parse line"))
+        .collect();
 }
 
 fn get_unique_characters(a: &str, b: &str) -> char {
@@ -18,21 +21,26 @@ fn get_unique_characters(a: &str, b: &str) -> char {
     otherchars.sort_by(|a, b| b.cmp(a));
     let that = String::from_iter(otherchars);
 
-
     let this_set: HashSet<char> = this.chars().collect();
     let that_set: HashSet<char> = that.chars().collect();
 
     // get which one is shorter
     let (shorter, longer) = if this_set.len() > that_set.len() {
         (that, this)
-    }  else {
+    } else {
         (this, that)
     };
 
     // fill the set with the characters from the shorter string
     let set: HashSet<char> = shorter.chars().collect();
-    let character = longer.chars().filter(|c| !set.contains(&c)).collect::<Vec<char>>();
-    println!("UNique character between {} and {} was {:?}", a,b , character);
+    let character = longer
+        .chars()
+        .filter(|c| !set.contains(&c))
+        .collect::<Vec<char>>();
+    println!(
+        "UNique character between {} and {} was {:?}",
+        a, b, character
+    );
     return character[0];
 }
 
@@ -58,20 +66,26 @@ pub fn star_two() -> i32 {
     let mut number_representation: HashMap<String, i32> = HashMap::new();
     let mut sum = 0;
     number_representation.insert("abcefg".to_string(), 0);
-    number_representation.insert("cf".to_string(),1);
-    number_representation.insert("acdeg".to_string(),2);
+    number_representation.insert("cf".to_string(), 1);
+    number_representation.insert("acdeg".to_string(), 2);
     number_representation.insert("acdfg".to_string(), 3);
-    number_representation.insert("bcdf".to_string(),4);
+    number_representation.insert("bcdf".to_string(), 4);
     number_representation.insert("abdfg".to_string(), 5);
     number_representation.insert("abdefg".to_string(), 6);
-    number_representation.insert("acf".to_string(),7);
-    number_representation.insert("abcdefg".to_string(),8);
+    number_representation.insert("acf".to_string(), 7);
+    number_representation.insert("abcdefg".to_string(), 8);
     number_representation.insert("abcdfg".to_string(), 9);
 
     for line in lines {
-        let mut actual_map : HashMap<char, char> = HashMap::new();
-        let current_io = line.split('|').map(|x| x.to_string()).collect::<Vec<String>>();
-        let mut coded_input: Vec<String> = current_io[0].split_whitespace().map(|x| x.trim().to_string()).collect::<Vec<String>>();
+        let mut actual_map: HashMap<char, char> = HashMap::new();
+        let current_io = line
+            .split('|')
+            .map(|x| x.to_string())
+            .collect::<Vec<String>>();
+        let mut coded_input: Vec<String> = current_io[0]
+            .split_whitespace()
+            .map(|x| x.trim().to_string())
+            .collect::<Vec<String>>();
         coded_input.sort_by(|x, y| x.len().cmp(&y.len()));
 
         let mut sorted_coded_input: Vec<String> = vec![];
@@ -89,13 +103,18 @@ pub fn star_two() -> i32 {
             sorted_coded_input.push(string_for_digit);
         }
 
-        let mut output = current_io[1].split_whitespace().map(|x| x.trim()).collect::<Vec<&str>>();
+        let mut output = current_io[1]
+            .split_whitespace()
+            .map(|x| x.trim())
+            .collect::<Vec<&str>>();
 
         // decoding number_representation
         let encoded_one = sorted_coded_input.get(0).unwrap();
-        let encoded_four =  sorted_coded_input.get(2).unwrap();
+        let encoded_four = sorted_coded_input.get(2).unwrap();
         let encoded_seven = sorted_coded_input.get(1).unwrap();
-        let encoded_eight = sorted_coded_input.get(sorted_coded_input.len() - 1).unwrap();
+        let encoded_eight = sorted_coded_input
+            .get(sorted_coded_input.len() - 1)
+            .unwrap();
 
         let mut encoded_nine = "";
         for input in &sorted_coded_input {
@@ -105,15 +124,14 @@ pub fn star_two() -> i32 {
                     if !input.contains(char) {
                         break;
                     }
-                    contains+=1;
-
+                    contains += 1;
                 }
 
                 for char in encoded_four.chars() {
                     if !input.contains(char) {
                         break;
                     }
-                    contains+=1;
+                    contains += 1;
                 }
 
                 if contains == 7 {
@@ -146,7 +164,6 @@ pub fn star_two() -> i32 {
                     encoded_zero = input;
                     break;
                 }
-
             }
         }
 
@@ -167,7 +184,7 @@ pub fn star_two() -> i32 {
         println!("Resolving f");
         let f = get_unique_characters(encoded_one, &String::from_iter([c]));
         println!("Resolving b");
-        let b = get_unique_characters(encoded_four, &String::from_iter([c,d,f]));
+        let b = get_unique_characters(encoded_four, &String::from_iter([c, d, f]));
 
         actual_map.insert(a, 'a');
         actual_map.insert(b, 'b');
@@ -176,7 +193,6 @@ pub fn star_two() -> i32 {
         actual_map.insert(e, 'e');
         actual_map.insert(f, 'f');
         actual_map.insert(g, 'g');
-
 
         for (k, v) in actual_map.iter() {
             println!("{} => {}", k, v);
@@ -199,14 +215,16 @@ pub fn star_two() -> i32 {
             decoded_digit = String::from_iter(decoded_digit_chars);
             println!("Decoded sorted: {}", decoded_digit);
 
-            let number_of_digit = number_representation.get(&decoded_digit).unwrap().to_string();
+            let number_of_digit = number_representation
+                .get(&decoded_digit)
+                .unwrap()
+                .to_string();
             output_number.push(number_of_digit.parse().unwrap());
             println!("Decoded digit: {}", number_of_digit);
         }
 
         sum += output_number.parse::<i32>().unwrap();
     }
-
 
     return sum;
 }

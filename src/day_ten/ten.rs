@@ -7,7 +7,10 @@ use std::ptr::hash;
 fn get_lines(filename: &str) -> Vec<String> {
     let file = File::open(filename).unwrap();
     let reader = BufReader::new(file);
-    return reader.lines().map(|l| l.expect("Could not parse line")).collect();
+    return reader
+        .lines()
+        .map(|l| l.expect("Could not parse line"))
+        .collect();
 }
 
 pub fn star_one() -> i32 {
@@ -33,7 +36,11 @@ pub fn star_one() -> i32 {
                 // check last opening_characters character
                 if opening_characters.last().unwrap() != hash_chars.get(&char).unwrap() {
                     syntax_errors.push(char);
-                    println!("Found not matching {} with closing character {}", opening_characters.last().unwrap(), &char);
+                    println!(
+                        "Found not matching {} with closing character {}",
+                        opening_characters.last().unwrap(),
+                        &char
+                    );
                     continue 'outer;
                 } else {
                     opening_characters.pop();
@@ -87,8 +94,16 @@ pub fn star_two() -> u64 {
         }
 
         for opening_character in opening_characters.iter().rev() {
-            let matching_key = hash_chars.iter()
-                .find_map(|(key, &val)| if val == *opening_character { Some(key) } else { None }).unwrap();
+            let matching_key = hash_chars
+                .iter()
+                .find_map(|(key, &val)| {
+                    if val == *opening_character {
+                        Some(key)
+                    } else {
+                        None
+                    }
+                })
+                .unwrap();
             score *= 5;
             match matching_key {
                 ')' => score += 1,
