@@ -7,6 +7,7 @@
 #[path = "day_seven/seven.rs"] mod day_seven;
 #[path = "day_eight/eight.rs"] mod day_eight;
 #[path = "day_nine/nine.rs"] mod day_nine;
+#[path = "day_ten/ten.rs"] mod day_ten;
 
 fn main() {
     /* DAY ONE
@@ -55,8 +56,9 @@ fn main() {
     //println!("{}", day_eight::star_one());
     //println!("{}", day_eight::star_two());
     //println!("{}", day_nine::star_one());
-    println!("{}", day_nine::star_two());
-
+    //println!("{}", day_nine::star_two());
+    //println!("{}", day_ten::star_one());
+    println!("{}", day_ten::star_two());
 
 }
 
