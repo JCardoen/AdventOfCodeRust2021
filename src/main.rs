@@ -18,7 +18,8 @@ mod day_ten;
 mod day_three;
 #[path = "day_two/two.rs"]
 mod day_two;
-
+#[path = "day_eleven/eleven.rs"]
+mod day_eleven;
 fn main() {
     /* DAY ONE
     let counted = day_one::star_one();
@@ -50,23 +51,36 @@ fn main() {
     //let score_of_last_winning_board = day_four::star_two();
     //println!("{}", score_of_last_winning_board);
 
+    // DAY FIVE
     //let intersection_count = day_five::star_one();
     //println!("{}", intersection_count);
 
     //let intersection_count = day_five::star_two();
     //println!("{}", intersection_count);
 
+    // DAY SIX
     //let fish_after_eighteen_days = day_six::star_one();
     //println!("{}", fish_after_eighteen_days);
     //println!("{}", day_six::star_one_and_two());
 
+    // DAY SEVEN
     //println!("{}", day_seven::star_one());
     //println!("{}", day_seven::star_two());
 
+    // DAY EIGHT
     //println!("{}", day_eight::star_one());
     //println!("{}", day_eight::star_two());
+
+    // DAY NINE
     //println!("{}", day_nine::star_one());
     //println!("{}", day_nine::star_two());
+
+    // DAY TEN
     //println!("{}", day_ten::star_one());
-    println!("{}", day_ten::star_two());
+    //println!("{}", day_ten::star_two());
+
+    // DAY ELEVEN
+    //println!("{}", day_eleven::star_one());
+    println!("{}", day_eleven::star_two());
+
 }
