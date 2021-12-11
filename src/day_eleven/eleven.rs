@@ -23,9 +23,14 @@ fn reset_octopus_flashers(grid: &mut Vec<Vec<i32>>) {
     }
 }
 
-fn increase_neighbors(grid: &mut Vec<Vec<i32>>, i: i32, j: i32, flashed_for_current_step: &mut Vec<(usize, usize)>) -> i32 {
-    let mut rows_to_check:Vec<i32> = vec![];
-    let mut cols_to_check:Vec<i32> = vec![];
+fn increase_neighbors(
+    grid: &mut Vec<Vec<i32>>,
+    i: i32,
+    j: i32,
+    flashed_for_current_step: &mut Vec<(usize, usize)>,
+) -> i32 {
+    let mut rows_to_check: Vec<i32> = vec![];
+    let mut cols_to_check: Vec<i32> = vec![];
     let idx_last_row = (grid.len() - 1) as i32;
     let idx_last_col = (grid[0].len() - 1) as i32;
     rows_to_check.push(i);
@@ -33,33 +38,45 @@ fn increase_neighbors(grid: &mut Vec<Vec<i32>>, i: i32, j: i32, flashed_for_curr
     let mut causal_flashes = 0;
 
     match i {
-        0 => rows_to_check.push(1), // First row
-        i if i == idx_last_row => rows_to_check.push(i-1), // Last row
-        _ => {rows_to_check.push(i+1); rows_to_check.push(i-1);} // default behaviour: check top and bottom
+        0 => rows_to_check.push(1),                          // First row
+        i if i == idx_last_row => rows_to_check.push(i - 1), // Last row
+        _ => {
+            rows_to_check.push(i + 1);
+            rows_to_check.push(i - 1);
+        } // default behaviour: check top and bottom
     }
 
     match j {
         0 => {
             cols_to_check.push(1);
-        }, // First col
+        } // First col
         j if j == idx_last_col => {
-            cols_to_check.push(j-1);
-        }, // last col
+            cols_to_check.push(j - 1);
+        } // last col
         _ => {
-            cols_to_check.push(j+1);
-            cols_to_check.push(j-1);
+            cols_to_check.push(j + 1);
+            cols_to_check.push(j - 1);
         }
     }
 
-    for row in rows_to_check.iter().map(|x| *x as usize).collect::<Vec<usize>>() {
-        for col in cols_to_check.iter().map(|x| *x as usize).collect::<Vec<usize>>() {
+    for row in rows_to_check
+        .iter()
+        .map(|x| *x as usize)
+        .collect::<Vec<usize>>()
+    {
+        for col in cols_to_check
+            .iter()
+            .map(|x| *x as usize)
+            .collect::<Vec<usize>>()
+        {
             grid[row][col] += 1;
 
             // If it is flashing but didnt flash yet
             if grid[row][col] > 9 && !flashed_for_current_step.contains(&(row, col)) {
                 flashed_for_current_step.push((row, col));
                 causal_flashes += 1;
-                causal_flashes += increase_neighbors(grid, row as i32, col as i32, flashed_for_current_step);
+                causal_flashes +=
+                    increase_neighbors(grid, row as i32, col as i32, flashed_for_current_step);
             }
         }
     }
@@ -67,7 +84,10 @@ fn increase_neighbors(grid: &mut Vec<Vec<i32>>, i: i32, j: i32, flashed_for_curr
     return causal_flashes;
 }
 
-fn traverse_octopus_grid(grid: &mut Vec<Vec<i32>>, mut flashed_for_current_step: Vec<(usize, usize)>) -> i32{
+fn traverse_octopus_grid(
+    grid: &mut Vec<Vec<i32>>,
+    mut flashed_for_current_step: Vec<(usize, usize)>,
+) -> i32 {
     let mut flashes_in_this_step = 0;
 
     for i in 0..grid.len() {
@@ -84,7 +104,8 @@ fn traverse_octopus_grid(grid: &mut Vec<Vec<i32>>, mut flashed_for_current_step:
                 if !flashed_for_current_step.contains(&(i, j)) {
                     flashes_in_this_step += 1;
                     flashed_for_current_step.push((i, j));
-                    flashes_in_this_step += increase_neighbors(grid, i as i32, j as i32, &mut flashed_for_current_step);
+                    flashes_in_this_step +=
+                        increase_neighbors(grid, i as i32, j as i32, &mut flashed_for_current_step);
                 }
             }
         }
@@ -130,9 +151,7 @@ pub fn star_one() -> i32 {
     return number_of_flashes;
 }
 
-fn simultaneous_flash(octopus_grid: &Vec<Vec<i32>>) {
-
-}
+fn simultaneous_flash(octopus_grid: &Vec<Vec<i32>>) {}
 
 pub fn star_two() -> i32 {
     let input_lines = get_lines("src/day_eleven/sample.txt");
@@ -156,7 +175,7 @@ pub fn star_two() -> i32 {
         reset_octopus_flashers(&mut octopus_grid);
 
         if octopus_grid.iter().flatten().sum::<i32>() == 0 {
-            println!("All 0 at step: {}", i+1);
+            println!("All 0 at step: {}", i + 1);
             step_all_zero = i + 1;
             break;
         }
