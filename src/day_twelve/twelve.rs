@@ -34,9 +34,6 @@ pub fn star_one() -> i32 {
             .push(paths[0].clone());
     }
 
-    println!("KEYS: {:?}", nodes.keys());
-    println!("VALS: {:?}", nodes.values());
-
     count_paths(
         "start",
         "end",
