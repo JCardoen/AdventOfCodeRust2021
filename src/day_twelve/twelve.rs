@@ -13,26 +13,6 @@ fn get_lines(filename: &str) -> Vec<String> {
         .collect();
 }
 
-#[derive(Clone)]
-struct Node {
-    name: String,
-    edges: Vec<String>,
-}
-
-impl Node {
-    pub fn new(name: String) -> Node {
-        Self {
-            name,
-            edges: vec![],
-        }
-    }
-    pub fn add_to_edges(edge: &String, node: &mut Node) {
-        if !node.edges.contains(edge) {
-            node.edges.push(edge.clone());
-        }
-    }
-}
-
 pub fn star_one() -> i32 {
     let input_lines = get_lines("src/day_twelve/input.txt");
     let mut number_of_distinct_paths = 0;
