@@ -151,8 +151,6 @@ pub fn star_one() -> i32 {
     return number_of_flashes;
 }
 
-fn simultaneous_flash(octopus_grid: &Vec<Vec<i32>>) {}
-
 pub fn star_two() -> i32 {
     let input_lines = get_lines("src/day_eleven/sample.txt");
     let mut octopus_grid: Vec<Vec<i32>> = vec![];
