@@ -102,4 +102,5 @@ fn main() {
 
     // DAY FIFTEEN
     println!("{}", day_fifteen::star_one());
+    println!("{}", day_fifteen::star_two());
 }
