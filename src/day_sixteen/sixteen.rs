@@ -12,17 +12,81 @@ fn get_lines(filename: &str) -> Vec<String> {
 
 pub fn star_one() -> usize {
     let lines = get_lines("src/day_sixteen/sample.txt");
-    
-    let binary = binary_from_hex(&lines[0]);
-    println!("{}", binary);
 
+    let binary = binary_from_hex(&lines[0]).chars().collect::<Vec<char>>();
+    let mut different_packets: Vec<String> = vec![];
+    let mut current_start_of_packet = 0;
+    while 1 == 1 {
+        // read packet
+        let mut id = get_id_of_packet(&binary[current_start_of_packet..].iter().collect::<String>());
+        if id == 4 {
+            // literal
+            different_packets.push(binary[current_start_of_packet..26].iter().collect::<String>());
+            current_start_of_packet = 
+        } else {
+            let subpackets = 
+        }
+    }
     return 0;
+}
+
+/// Decodes a packet to binary representation
+fn decode_packet(hex: &str) -> String {
+    let packet = binary_from_hex(hex);
+    return packet;
 }
 
 fn binary_from_hex(hex: &str) -> String {
     return hex.chars().map(to_binary).collect();
 }
 
+/// Gets the ID of the packet
+fn get_id_of_packet(packet: &str) -> i32 {
+    let packet_id = packet[3..6].to_string();
+    return i32::from_str_radix(&packet_id, 2).unwrap();
+}
+
+fn get_sub_packets(packet: &str) -> Vec<String> {
+    let mode = packet.chars().nth(6).unwrap();
+    let mut subpackets: Vec<String> = vec![];
+    // Mode 0 means length is 15 bits wide representing
+    // number of bits in subpackets
+    // Mode 1 means 11 bits of L determine number of subpackets, each subpacket
+    // consisting of 11 bits
+    let mut length = 0;
+    let packet_indexed = packet.chars().collect::<Vec<char>>();
+    if mode == '0' {
+        length = i32::from_str_radix(&packet[7..23], 2).unwrap();
+
+        for subpacket in packet_indexed[23..].chunks(length as usize) {
+            subpackets.push(subpacket.iter().collect::<String>());
+        }
+    } else {
+        length = i32::from_str_radix(&packet[7..18], 2).unwrap();
+        let length_to_search: usize = ((length * 11) + 18) as usize;
+        for subpacket in packet_indexed[18..length_to_search].chunks(11 as usize) {
+            println!("{:?}", subpacket);
+            subpackets.push(subpacket.iter().collect::<String>());
+        }
+    }
+
+    return subpackets;
+}
+
+/// Gets the number encoded in the packet
+fn get_number_of_literal_packet(packet: &str) -> i32 {
+    let literal = &packet[6..].to_string();
+    let mut number = String::new();
+    for quad in literal.chars().collect::<Vec<char>>().chunks(5) {
+        let bin_string: String = quad[1..5].iter().collect();
+        if quad[0] == '0' {
+            number.push_str(&bin_string.clone());
+            break;
+        }
+        number.push_str(&bin_string.clone());
+    }
+    return i32::from_str_radix(&number, 2).unwrap();
+}
 
 fn to_binary(c: char) -> &'static str {
     match c {
@@ -43,5 +107,43 @@ fn to_binary(c: char) -> &'static str {
         'E' => "1110",
         'F' => "1111",
         _ => "",
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_conversion() {
+        let result = binary_from_hex("FFFF");
+        assert_eq!(result, "1111111111111111");
+    }
+
+    #[test]
+    fn test_decode_packet() {
+        let result = decode_packet("D2FE28");
+        assert_eq!(result, "110100101111111000101000");
+    }
+
+    #[test]
+    fn test_get_id() {
+        let result = decode_packet("D2FE28");
+        let packet_id = get_id_of_packet(&result);
+        assert_eq!(4, packet_id);
+    }
+
+    #[test]
+    fn test_get_literal() {
+        let result = decode_packet("D2FE28");
+        let packet_id = get_number_of_literal_packet(&result);
+        assert_eq!(2021, packet_id);
+    }
+    #[test]
+    fn test_get_sub_packets() {
+        let result = decode_packet("EE00D40C823060");
+        let subpackets = get_sub_packets(&result); 
+        assert_eq!(result, "11101110000000001101010000001100100000100011000001100000"); 
+        assert_eq!(format!("{}{}{}", subpackets[0], subpackets[1], subpackets[2]), "010100000011001000001000110000011");
     }
 }
