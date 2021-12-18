@@ -1,5 +1,8 @@
+use std::env::current_dir;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
+use std::panic::catch_unwind;
+use std::thread::current;
 
 fn get_lines(filename: &str) -> Vec<String> {
     let file = File::open(filename).unwrap();
@@ -10,23 +13,49 @@ fn get_lines(filename: &str) -> Vec<String> {
         .collect();
 }
 
+fn read_packets(binary_string: String, packets: &mut Vec<String>, start: usize, end: usize) {
+    if start == end {
+        return;
+    }
+    let current_packet = &binary_string[start..];
+    let id_of_packet = get_id_of_packet(&current_packet);
+    let version_of_packet = get_version_of_packet(&current_packet);
+    println!("Found packet version: {}", version_of_packet);
+    const LITERAL_PACKET_SIZE: usize = 26;
+
+    if id_of_packet == 4 {
+        // literal
+        packets.push(current_packet[start..LITERAL_PACKET_SIZE].parse().unwrap());
+        read_packets(
+            binary_string.clone(),
+            packets,
+            LITERAL_PACKET_SIZE as usize,
+            end,
+        );
+    } else {
+        let mut sub_packets = get_sub_packets(&current_packet);
+        for sub_packet in &sub_packets {
+            packets.push((*sub_packet.clone()).parse().unwrap());
+        }
+    }
+}
+
 pub fn star_one() -> usize {
     let lines = get_lines("src/day_sixteen/sample.txt");
 
     let binary = binary_from_hex(&lines[0]).chars().collect::<Vec<char>>();
+    let binary_string = &binary.iter().collect::<String>();
+
     let mut different_packets: Vec<String> = vec![];
     let mut current_start_of_packet = 0;
-    while 1 == 1 {
-        // read packet
-        let mut id = get_id_of_packet(&binary[current_start_of_packet..].iter().collect::<String>());
-        if id == 4 {
-            // literal
-            different_packets.push(binary[current_start_of_packet..26].iter().collect::<String>());
-            current_start_of_packet = 
-        } else {
-            let subpackets = 
-        }
-    }
+    read_packets(
+        binary_string.clone(),
+        &mut different_packets,
+        0,
+        binary_string.len(),
+    );
+
+    println!("{:?}", different_packets);
     return 0;
 }
 
@@ -43,6 +72,11 @@ fn binary_from_hex(hex: &str) -> String {
 /// Gets the ID of the packet
 fn get_id_of_packet(packet: &str) -> i32 {
     let packet_id = packet[3..6].to_string();
+    return i32::from_str_radix(&packet_id, 2).unwrap();
+}
+
+fn get_version_of_packet(packet: &str) -> i32 {
+    let packet_id = packet[..3].to_string();
     return i32::from_str_radix(&packet_id, 2).unwrap();
 }
 
@@ -63,9 +97,9 @@ fn get_sub_packets(packet: &str) -> Vec<String> {
         }
     } else {
         length = i32::from_str_radix(&packet[7..18], 2).unwrap();
+
         let length_to_search: usize = ((length * 11) + 18) as usize;
         for subpacket in packet_indexed[18..length_to_search].chunks(11 as usize) {
-            println!("{:?}", subpacket);
             subpackets.push(subpacket.iter().collect::<String>());
         }
     }
@@ -142,8 +176,14 @@ mod tests {
     #[test]
     fn test_get_sub_packets() {
         let result = decode_packet("EE00D40C823060");
-        let subpackets = get_sub_packets(&result); 
-        assert_eq!(result, "11101110000000001101010000001100100000100011000001100000"); 
-        assert_eq!(format!("{}{}{}", subpackets[0], subpackets[1], subpackets[2]), "010100000011001000001000110000011");
+        let subpackets = get_sub_packets(&result);
+        assert_eq!(
+            result,
+            "11101110000000001101010000001100100000100011000001100000"
+        );
+        assert_eq!(
+            format!("{}{}{}", subpackets[0], subpackets[1], subpackets[2]),
+            "010100000011001000001000110000011"
+        );
     }
 }

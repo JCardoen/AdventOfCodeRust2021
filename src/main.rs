@@ -8,6 +8,8 @@ mod day_fifteen;
 mod day_five;
 #[path = "day_four/four.rs"]
 mod day_four;
+#[path = "day_fourteen/fourteen.rs"]
+mod day_fourteen;
 #[path = "day_nine/nine.rs"]
 mod day_nine;
 #[path = "day_one/one.rs"]
@@ -28,6 +30,7 @@ mod day_three;
 mod day_twelve;
 #[path = "day_two/two.rs"]
 mod day_two;
+
 fn main() {
     /* DAY ONE
     let counted = day_one::star_one();
@@ -99,12 +102,13 @@ fn main() {
     //println!("{}", day_thirteen::solve());
 
     // DAY FOURTEEN
-    //println!("{}", day_fourteen::star_one());
+    ///println!("{}", day_fourteen::star_one());
+    println!("{}", day_fourteen::star_two());
 
     // DAY FIFTEEN
     // println!("{}", day_fifteen::star_one());
     // println!("{}", day_fifteen::star_two());
 
     // DAY SIXTEEN
-    println!("{}", day_sixteen::star_one());
+    //println!("{}", day_sixteen::star_one());
 }
